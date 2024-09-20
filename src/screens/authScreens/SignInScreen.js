@@ -16,7 +16,7 @@ export default function SignInScreen() {
     if (email.trim() === "") {
       Alert.alert("Error", "Please enter your email address.");
     } else {
-      navigation.navigate('SignUpScreen'); // Navigate to SignUpScreen if email is entered
+      navigation.navigate('HomeScreen');
     }
   };
 
