@@ -11,7 +11,18 @@ export const colors = {
     headerText: "white",
 };
 export const COLOURS = {
-    white: '#ffffff',
+   // base colors
+   primary: "#6a0dad", // orange
+   secondary: "#CDCDD2",   // gray
+
+    // colors
+    black: "#1E1F20",
+    white: "#FFFFFF",
+    
+    purple: '#6a0dad',
+    purple1: '#1230AE',
+    purple2: '#C68FE6',
+    purple3: '#C68FE6',
     black: '#000000',
     lightGray: '#B3B4B6',
     accent: '#FFC231',
@@ -55,9 +66,13 @@ export const Categories = [
           name: 'Kebabas',
           weight: 120,
           rating: '5.0',
-          price: 13,
+          price: 17,
           isTopOfTheWeek: true,
-          image: require('../global/samples/Kebab.png'),
+          image: require('../assets/images/sushi.jpg'),
+          images: [
+            require('../assets/images/sushi.jpg'), // First Image
+            require('../global/samples/Kebab.png')  // Second Image (same as the first)
+          ],  
           size: 'Large 8"',
           crust: 'Thick Crust',
           delivery: 25,
@@ -66,7 +81,7 @@ export const Categories = [
           ],
         },
         {
-          name: 'Classic BigMac Burger',
+          name: 'Classic BigMac Burger and Fries',
           weight: 120,
           rating: '5.0',
           price: 19,
@@ -80,7 +95,7 @@ export const Categories = [
           ],
         },
         {
-          name: 'Classic Burger',
+          name: 'Another very wierdly Classic Burger',
           weight: 120,
           rating: '5.0',
           price: 39,

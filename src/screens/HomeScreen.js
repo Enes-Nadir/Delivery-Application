@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Header from '../components/Header';
 
 const HomeScreen = ({ navigation }) => {
   const [currentSelected, setCurrentSelected] = useState([0]);
@@ -31,7 +32,7 @@ const HomeScreen = ({ navigation }) => {
             justifyContent: 'space-evenly',
             alignItems: 'center',
             backgroundColor:
-              currentSelected == index ? COLOURS.accent : COLOURS.white,
+            currentSelected == index ? COLOURS.purple2 : COLOURS.white,
             borderRadius: 20,
             margin: 10,
             elevation: 5,
@@ -60,7 +61,7 @@ const HomeScreen = ({ navigation }) => {
               height: 30,
               borderRadius: 100,
               backgroundColor:
-                currentSelected == index ? COLOURS.white : COLOURS.accentRed,
+                currentSelected == index ? COLOURS.white : COLOURS.purple3,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
@@ -125,7 +126,7 @@ const HomeScreen = ({ navigation }) => {
                   name="crown"
                   style={{
                     fontSize: 7,
-                    color: COLOURS.accent,
+                    color: COLOURS.purple1,
                   }}
                 />
                 <Text
@@ -140,16 +141,15 @@ const HomeScreen = ({ navigation }) => {
               </View>
             )}
             <Text
-              style={{
-                fontSize: 14,
-                color: COLOURS.black,
-                fontWeight: 'bold',
-                paddingTop: 2,
-                textAlign: 'center', // Center align text
-              }}>
-              {item.name}
-            </Text>
-
+            style={{
+              fontSize: 14,
+              color: COLOURS.black,
+              fontWeight: 'bold',
+              paddingTop: 2,
+              textAlign: 'center', 
+            }}>
+            {item.name.length > 22 ? item.name.substring(0, 20) + '...' : item.name}
+          </Text>
           </View>
   
           {/* Image Section */}
@@ -159,7 +159,7 @@ const HomeScreen = ({ navigation }) => {
               style={{
                 width: '100%',
                 height: '100%',
-                resizeMode: 'contain', // Ensure the image fits within the container
+                resizeMode: 'contain', 
               }}
             />
           </View>
@@ -176,17 +176,17 @@ const HomeScreen = ({ navigation }) => {
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between', // Space between plus and rating
+              justifyContent: 'space-between', 
               alignItems: 'center',
               width: '100%',
-              paddingHorizontal: 10, // Add padding to match the container
+              paddingHorizontal: 10, 
             }}>
             {/* Plus Sign */}
             <TouchableOpacity
               style={{
                 width: 40,
                 height: 30,
-                backgroundColor: COLOURS.accent,
+                backgroundColor: COLOURS.purple3,
                 borderTopRightRadius: 20,
                 borderBottomLeftRadius: 20,
                 justifyContent: 'center',
@@ -196,7 +196,7 @@ const HomeScreen = ({ navigation }) => {
                 // Handle add to cart action here
                 console.log('Add to cart action');
               }}>
-              <Entypo name="plus" style={{ fontSize: 18, color: COLOURS.black }} />
+              <Entypo name="plus" style={{ fontSize: 18, color: COLOURS.white }} />
             </TouchableOpacity>
   
             {/* Rating Section */}
@@ -237,93 +237,51 @@ const HomeScreen = ({ navigation }) => {
       style={{
         width: '100%',
         height: '100%',
-        backgroundColor: COLOURS.white,
+        backgroundColor: COLOURS.purple,
       }}>
+      
+      {/* <Header title="Bring" /> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             width: '100%',
             height: '100%',
             backgroundColor: COLOURS.white,
-            position: 'relative',
           }}>
-          <StatusBar backgroundColor={COLOURS.white} barStyle="dark-content" />
-          <View
+           {/* Search Bar Wrapper */}
+           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 20,
+              width: '100%',
+              alignItems: 'center', 
+              marginVertical: 20, 
             }}>
-            <TouchableOpacity
+            <View
               style={{
-                width: 40,
-                height: 40,
-              }}>
-              <Image
-                // source={require('../database/images/profile.jpg')}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  resizeMode: 'contain',
-                  borderRadius: 500,
-                }}
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#EDE8DC', 
+                borderRadius: 20, 
+                paddingHorizontal: 20, 
+                width: '75%',
+                }}>
+              <Ionicons
+                name="search"
+                style={{ fontSize: 20, color: COLOURS.black, opacity: 0.8 }}
               />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Material
-                name="segment"
+              <TextInput
+                placeholder="Search..."
+                placeholderTextColor="#888" 
                 style={{
-                  fontSize: 28,
                   color: COLOURS.black,
+                  fontSize: 16,
+                  paddingVertical: 5,
+                  marginLeft: 10,
+                  flex: 1,
                 }}
               />
-            </TouchableOpacity>
+            </View>
           </View>
-          <View style={{ padding: 20 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: COLOURS.black,
-                opacity: 0.5,
-                fontWeight: '400',
-              }}>
-              Food
-            </Text>
-            <Text
-              style={{
-                fontSize: 40,
-                color: COLOURS.black,
-                fontWeight: '600',
-                letterSpacing: 2,
-              }}>
-              Delivery
-            </Text>
-          </View>
-          <View
-            style={{
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="search"
-              style={{ fontSize: 20, color: COLOURS.black, opacity: 0.8 }}
-            />
-            <TextInput
-              placeholder="Search..."
-              style={{
-                color: COLOURS.black,
-                fontSize: 16,
-                paddingVertical: 5,
-                borderBottomWidth: 1,
-                borderBottomColor: COLOURS.black + 20,
-                width: '90%',
-                marginLeft: 10,
-                letterSpacing: 1,
-              }}
-            />
-          </View>
+          {/* Categories Section */}
           <Text
             style={{
               paddingTop: 20,

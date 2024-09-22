@@ -16,7 +16,7 @@ export default function SignInScreen() {
     if (email.trim() === "") {
       Alert.alert("Error", "Please enter your email address.");
     } else {
-      navigation.navigate('HomeScreen');
+      navigation.navigate('BottomTabs');
     }
   };
 
@@ -50,7 +50,7 @@ export default function SignInScreen() {
             title="Continue with Email"
             buttonStyle={parameters.styledButton}
             titleStyle={parameters.buttonTitle}
-            onPress={handleContinueWithEmail} // Updated with validation
+            onPress={handleContinueWithEmail} 
           />
         </View>
 
