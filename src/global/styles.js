@@ -1,7 +1,7 @@
 export const colors = {
     buttons: '#6a0dad', 
     grey1: '#43484d',
-    grey2: '#5e677',
+    grey2: '#5e6770',
     grey3: '#86939e',
     grey4: '#bdc6cf',
     grey5: '#e1e8ee',
@@ -70,9 +70,9 @@ export const Categories = [
           isTopOfTheWeek: true,
           image: require('../assets/images/sushi.jpg'),
           images: [
-            require('../assets/images/sushi.jpg'), // First Image
-            require('../global/samples/Kebab.png')  // Second Image (same as the first)
-          ],  
+          require('../assets/images/sushi.jpg'),
+          require('../assets/images/sushi.jpg')
+          ],
           size: 'Large 8"',
           crust: 'Thick Crust',
           delivery: 25,

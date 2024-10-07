@@ -9,6 +9,8 @@ import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom
 import {COLOURS} from '../global/styles';
 import { icons } from '../constants';
 import HomeScreen from '../screens/HomeScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+
 import Svg, {Path} from 'react-native-svg';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 
@@ -104,18 +106,6 @@ const CustomTabBar = (props) => {
 export default function BottomTabs(){
 return (
         <Tabs.Navigator
-            // tabBarOptions={{
-            //     showLabel: false,
-            //     style: {
-            //         position: 'absolute',
-            //         left: 0,
-            //         bottom: 0,
-            //         right: 0,
-            //         borderTopWidth: 0,
-            //         backgroundColor: "transparent",
-            //         elevation: 0
-            //     }
-            // }}
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
@@ -127,7 +117,6 @@ return (
                     elevation: 0,
                     backgroundColor: "#EDE8DC",
                     borderTopColor: "#EDE8DC",
-                    
                 }  
             }}
             tabBar={(props) => (
@@ -181,8 +170,8 @@ return (
                     )
                 }}
             />
-
-            <Tabs.Screen
+    {/* Like Button */}
+            {/* <Tabs.Screen
                 name="Like"
                 component={HomeScreen}
                 options={{
@@ -203,11 +192,11 @@ return (
                         />
                     )
                 }}
-            />
+            /> */}
 
             <Tabs.Screen
                 name="User"
-                component={HomeScreen}
+                component={ProfileScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <Image
