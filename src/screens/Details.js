@@ -12,7 +12,7 @@ const defaultImages = [
 ];
 
 const Details = ({ route, navigation }) => {
-  const { item, addToCart, initialQuantity = 0 } = route.params;
+  const { item, addToCart, initialQuantity = 0, updateQuantity } = route.params;
   const [quantity, setQuantity] = useState(initialQuantity);
   const buttonWidth = useRef(new Animated.Value(0.9 * width)).current;
   const buttonOpacity = useRef(new Animated.Value(1)).current;
@@ -27,7 +27,7 @@ const Details = ({ route, navigation }) => {
   }, [initialQuantity]);
 
   const updateCart = (newQuantity) => {
-    addToCart(item, newQuantity); // Pass 0 to remove item
+    addToCart(item, newQuantity); 
   };
 
   const handleAddToCart = () => {
@@ -47,9 +47,14 @@ const Details = ({ route, navigation }) => {
   };
 
   const resetCart = () => {
-    updateQuantity(index, 'remove');
-    setQuantity(0);
+    if (updateQuantity) {
+      updateQuantity(item.id, 'remove'); // Call updateQuantity if it exists
+      setQuantity(0);
+    } else {
+      console.error("updateQuantity function is not available in route params.");
+    }
   };
+  
 
   const interpolatedButtonColor = buttonColor.interpolate({
     inputRange: [0, 1],

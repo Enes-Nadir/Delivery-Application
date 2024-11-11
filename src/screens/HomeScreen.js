@@ -36,6 +36,22 @@ const HomeScreen = ({ navigation }) => {
     setCartItems(newCartItems);
   };
 
+  const updateQuantity = (itemId, action) => {
+    setCartItems((prevItems) => {
+      const updatedItems = prevItems.map((item) => {
+        if (item.id === itemId) {
+          return {
+            ...item,
+            quantity: action === 'add' ? item.quantity + 1 : item.quantity - 1,
+          };
+        }
+        return item;
+      }).filter(item => item.quantity > 0); // Remove items with quantity 0
+      return updatedItems;
+    });
+  };
+  
+
   const renderCategories = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -110,6 +126,8 @@ const HomeScreen = ({ navigation }) => {
           navigation.push('details', {
             item: item, // Pass the item itself as a prop
             addToCart,
+            initialQuantity: item.quantity || 0,
+            updateQuantity,
           })
         }>
 
