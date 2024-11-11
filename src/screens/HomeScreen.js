@@ -3,22 +3,38 @@ import {
   View,
   Text,
   ScrollView,
-  StatusBar,
-  Image,
   TouchableOpacity,
-  TextInput,
+  Image,
   FlatList,
 } from 'react-native';
 import { Categories, COLOURS } from '../global/styles';
-import Material from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Header from '../components/Header';
+import SearchComponent from '../components/Search';
+import FloatingCartIcon from '../navigation/CartIcon';
 
 const HomeScreen = ({ navigation }) => {
   const [currentSelected, setCurrentSelected] = useState([0]);
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (item) => {
+    setCartItems((prevItems) => {
+      const itemIndex = prevItems.findIndex((cartItem) => cartItem.id === item.id);
+      if (itemIndex !== -1) {
+        const updatedItems = [...prevItems];
+        updatedItems[itemIndex].quantity += 1;
+        return updatedItems;
+      } else {
+        return [...prevItems, { ...item, quantity: 1 }];
+      }
+    });
+  };
+
+
+  const updateCartItems = (newCartItems) => {
+    setCartItems(newCartItems);
+  };
 
   const renderCategories = ({ item, index }) => {
     return (
@@ -32,7 +48,7 @@ const HomeScreen = ({ navigation }) => {
             justifyContent: 'space-evenly',
             alignItems: 'center',
             backgroundColor:
-            currentSelected == index ? COLOURS.purple2 : COLOURS.white,
+              currentSelected == index ? COLOURS.purple2 : COLOURS.white,
             borderRadius: 20,
             margin: 10,
             elevation: 5,
@@ -50,10 +66,10 @@ const HomeScreen = ({ navigation }) => {
           <Text
             style={{
               fontSize: 16,
-              color: COLOURS.black,
+              color: COLOURS.text1,
               fontWeight: '600',
             }}>
-            {item.name}
+            {item.name || ''}
           </Text>
           <View
             style={{
@@ -87,21 +103,16 @@ const HomeScreen = ({ navigation }) => {
           width: 180,
           justifyContent: 'center',
           alignItems: 'center',
-          marginRight: 10, 
-          marginBottom:20,
+          marginRight: 10,
+          marginBottom: 20,
         }}
         onPress={() =>
           navigation.push('details', {
-            name: item.name,
-            price: item.price,
-            image: item.image,
-            size: item.size,
-            crust: item.crust,
-            delivery: item.delivery,
-            ingredients: item.ingredients,
-            isTopOfTheWeek: item.isTopOfTheWeek,
+            item: item, // Pass the item itself as a prop
+            addToCart,
           })
         }>
+
         <View
           style={{
             width: '100%',
@@ -112,76 +123,59 @@ const HomeScreen = ({ navigation }) => {
             position: 'relative',
             padding: 10,
             justifyContent: 'space-between',
-            alignItems: 'center', 
+            alignItems: 'center',
           }}>
-          {/* Top of the Week Section */}
           <View style={{ alignItems: 'center' }}>
             {item.isTopOfTheWeek && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <FontAwesome
                   name="crown"
-                  style={{
-                    fontSize: 7,
-                    color: COLOURS.purple1,
-                  }}
+                  style={{ fontSize: 7, color: COLOURS.purple1 }}
                 />
                 <Text
                   style={{
                     fontSize: 10,
-                    color: COLOURS.black,
+                    color: COLOURS.text,
                     opacity: 0.8,
                     marginLeft: 5,
                   }}>
-                  top of the week
+                  Top of the week
                 </Text>
               </View>
             )}
             <Text
-            style={{
-              fontSize: 14,
-              color: COLOURS.black,
-              fontWeight: 'bold',
-              paddingTop: 2,
-              textAlign: 'center', 
-            }}>
-            {item.name.length > 22 ? item.name.substring(0, 20) + '...' : item.name}
-          </Text>
+              style={{
+                fontSize: 14,
+                color: COLOURS.text,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              {item.name ? (item.name.length > 22 ? item.name.substring(0, 20) + '...' : item.name) : ''}
+            </Text>
           </View>
-  
-          {/* Image Section */}
+          
           <View style={{ width: 80, height: 80, marginVertical: 10 }}>
             <Image
               source={item.image}
-              style={{
-                width: '100%',
-                height: '100%',
-                resizeMode: 'contain', 
-              }}
+              style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
             />
           </View>
           <Text
-              style={{
-                fontSize: 12,
-                color: COLOURS.black,
-                opacity: 0.5,
-              }}>
-              {item.weight}
-            </Text>
-  
-          {/* Bottom Section */}
+            style={{
+              fontSize: 12,
+              color: COLOURS.text,
+              opacity: 0.5,
+            }}>
+            {item.weight || ''}
+          </Text>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between', 
+              justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
-              paddingHorizontal: 10, 
+              paddingHorizontal: 10,
             }}>
-            {/* Plus Sign */}
             <TouchableOpacity
               style={{
                 width: 40,
@@ -192,30 +186,22 @@ const HomeScreen = ({ navigation }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              onPress={() => {
-                // Handle add to cart action here
-                console.log('Add to cart action');
-              }}>
+              onPress={() => addToCart(item)}
+            >
               <Entypo name="plus" style={{ fontSize: 18, color: COLOURS.white }} />
             </TouchableOpacity>
-  
-            {/* Rating Section */}
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <AntDesign
                 name="star"
-                style={{ fontSize: 12, color: COLOURS.black, paddingRight: 5 }}
+                style={{ fontSize: 12, color: COLOURS.text, paddingRight: 5 }}
               />
               <Text
                 style={{
                   fontSize: 15,
-                  color: COLOURS.black,
+                  color: COLOURS.text,
                   fontWeight: 'bold',
                 }}>
-                {item.rating}
+                {item.rating || '0'}
               </Text>
             </View>
           </View>
@@ -223,72 +209,41 @@ const HomeScreen = ({ navigation }) => {
       </TouchableOpacity>
     );
   };
-  
 
-  // Get items for a specific category by name
   const getItemsByCategory = (categoryName) => {
     const category = Categories.find((cat) => cat.name === categoryName);
     return category ? category.items : [];
   };
-
 
   return (
     <View
       style={{
         width: '100%',
         height: '100%',
-        backgroundColor: COLOURS.purple,
+        backgroundColor: COLOURS.lightGray,
       }}>
-      
-      {/* <Header title="Bring" /> */}
+      {cartItems.length > 0 && (
+        <FloatingCartIcon
+          cartCount={cartItems.length}
+          onPress={() => navigation.navigate('CartScreen', { cartItems, updateCartItems })}
+        />
+      )}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             width: '100%',
             height: '100%',
-            backgroundColor: COLOURS.white,
           }}>
-           {/* Search Bar Wrapper */}
-           <View
-            style={{
-              width: '100%',
-              alignItems: 'center', 
-              marginVertical: 20, 
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: '#EDE8DC', 
-                borderRadius: 20, 
-                paddingHorizontal: 20, 
-                width: '75%',
-                }}>
-              <Ionicons
-                name="search"
-                style={{ fontSize: 20, color: COLOURS.black, opacity: 0.8 }}
-              />
-              <TextInput
-                placeholder="Search..."
-                placeholderTextColor="#888" 
-                style={{
-                  color: COLOURS.black,
-                  fontSize: 16,
-                  paddingVertical: 5,
-                  marginLeft: 10,
-                  flex: 1,
-                }}
-              />
-            </View>
+          <View style={{ marginTop: 20 }}>
+            <SearchComponent />
           </View>
-          {/* Categories Section */}
           <Text
             style={{
               paddingTop: 20,
               paddingHorizontal: 20,
               fontSize: 18,
               fontWeight: '700',
-              color: COLOURS.black,
+              color: COLOURS.text,
               letterSpacing: 1,
             }}>
             Categories
@@ -299,14 +254,13 @@ const HomeScreen = ({ navigation }) => {
             renderItem={renderCategories}
             showsHorizontalScrollIndicator={false}
           />
-         {/* First FlatList for Meat category */}
-         <Text
+          <Text
             style={{
               paddingHorizontal: 20,
               marginVertical: 20,
               fontSize: 18,
               fontWeight: '700',
-              color: COLOURS.black,
+              color: COLOURS.text,
             }}>
             Popular
           </Text>
@@ -319,16 +273,15 @@ const HomeScreen = ({ navigation }) => {
               paddingHorizontal: 10,
             }}
             style={{ marginBottom: 20 }}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item) => item.id.toString()}
           />
-          {/* Second FlatList for Pizza category */}
           <Text
             style={{
               paddingHorizontal: 20,
               marginVertical: 20,
               fontSize: 18,
               fontWeight: '700',
-              color: COLOURS.black,
+              color: COLOURS.text,
             }}>
             Pizza
           </Text>
@@ -340,26 +293,9 @@ const HomeScreen = ({ navigation }) => {
             contentContainerStyle={{
               paddingHorizontal: 10,
             }}
-            style={{ marginBottom: 20 }}
-            keyExtractor={(item, index) => index.toString()}
+            style={{ marginBottom: 70 }}
+            keyExtractor={(item) => item.id.toString()}
           />
-          <TouchableOpacity
-            style={{
-              margin: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-              opacity: 0.5,
-            }}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: COLOURS.black,
-                borderBottomWidth: 1,
-                borderBottomColor: COLOURS.black,
-              }}>
-              Load more
-            </Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
